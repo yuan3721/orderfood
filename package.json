@@ -1,0 +1,28 @@
+{
+  "name": "orderfood",
+  "version": "1.0.0",
+  "private": true,
+  "description": "订餐系统 - 包含 C 端小程序、B 端小程序和服务端",
+  "scripts": {
+    "dev:server": "pnpm --filter @orderfood/server dev",
+    "dev:user": "pnpm --filter @orderfood/user-app dev:mp-weixin",
+    "dev:merchant": "pnpm --filter @orderfood/merchant-app dev:mp-weixin",
+    "build:server": "pnpm --filter @orderfood/server build",
+    "build:user": "pnpm --filter @orderfood/user-app build:mp-weixin",
+    "build:merchant": "pnpm --filter @orderfood/merchant-app build:mp-weixin",
+    "lint": "pnpm -r lint",
+    "format": "prettier --write \"**/*.{ts,tsx,vue,js,json,md}\""
+  },
+  "keywords": [
+    "orderfood",
+    "miniprogram",
+    "uniapp",
+    "koa"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

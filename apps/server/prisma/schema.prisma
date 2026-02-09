@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 用户表
+model User {
+  id        BigInt   @id @default(autoincrement())
+  openid    String   @unique @db.VarChar(64)
+  nickname  String?  @db.VarChar(50)
+  avatar    String?  @db.VarChar(255)
+  phone     String?  @db.VarChar(20)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  orders Order[]
+
+  @@map("users")
+}
+
+// 商家表
+model Merchant {
+  id        BigInt   @id @default(autoincrement())
+  name      String   @db.VarChar(100)
+  account   String   @unique @db.VarChar(50)
+  password  String   @db.VarChar(255)
+  openid    String?  @db.VarChar(64)
+  role      String   @default("admin") @db.VarChar(20)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  menus  Menu[]
+  orders Order[]
+
+  @@map("merchants")
+}
+
+// 菜谱表
+model Menu {
+  id         BigInt   @id @default(autoincrement())
+  date       DateTime @db.Date
+  name       String   @db.VarChar(100)
+  price      Decimal  @db.Decimal(10, 2)
+  image      String?  @db.VarChar(255)
+  stock      Int      @default(0)
+  sold       Int      @default(0)
+  cutoffTime DateTime @map("cutoff_time")
+  merchantId BigInt   @map("merchant_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  merchant   Merchant    @relation(fields: [merchantId], references: [id])
+  orderItems OrderItem[]
+
+  @@index([date], name: "idx_menus_date")
+  @@index([merchantId, date], name: "idx_menus_merchant_date")
+  @@map("menus")
+}
+
+// 订单表
+model Order {
+  id         BigInt    @id @default(autoincrement())
+  orderNo    String    @unique @map("order_no") @db.VarChar(32)
+  userId     BigInt    @map("user_id")
+  merchantId BigInt?   @map("merchant_id")
+  totalPrice Decimal   @map("total_price") @db.Decimal(10, 2)
+  status     Int       @default(0) @db.SmallInt // 0: 待支付, 1: 已支付, 2: 已取消
+  remark     String?   @db.Text
+  createdAt  DateTime  @default(now()) @map("created_at")
+  paidAt     DateTime? @map("paid_at")
+  canceledAt DateTime? @map("canceled_at")
+
+  user     User        @relation(fields: [userId], references: [id])
+  merchant Merchant?   @relation(fields: [merchantId], references: [id])
+  items    OrderItem[]
+  payments Payment[]
+
+  @@index([userId, createdAt(sort: Desc)], name: "idx_orders_user")
+  @@index([merchantId, createdAt], name: "idx_orders_merchant_date")
+  @@index([orderNo], name: "idx_orders_order_no")
+  @@map("orders")
+}
+
+// 订单详情表
+model OrderItem {
+  id       BigInt  @id @default(autoincrement())
+  orderId  BigInt  @map("order_id")
+  menuId   BigInt  @map("menu_id")
+  menuName String  @map("menu_name") @db.VarChar(100)
+  quantity Int
+  price    Decimal @db.Decimal(10, 2)
+  subtotal Decimal @db.Decimal(10, 2)
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menu  Menu  @relation(fields: [menuId], references: [id])
+
+  @@index([orderId], name: "idx_order_items_order")
+  @@map("order_items")
+}
+
+// 支付记录表
+model Payment {
+  id            BigInt    @id @default(autoincrement())
+  orderId       BigInt    @map("order_id")
+  transactionId String?   @map("transaction_id") @db.VarChar(64)
+  amount        Decimal   @db.Decimal(10, 2)
+  status        Int       @default(0) @db.SmallInt // 0: 待支付, 1: 成功, 2: 失败
+  payTime       DateTime? @map("pay_time")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@map("payments")
+}
