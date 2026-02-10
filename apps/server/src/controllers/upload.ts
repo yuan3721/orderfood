@@ -38,7 +38,7 @@ export const uploadController = {
     // 读取文件内容
     const fs = await import('fs')
     const buffer = fs.readFileSync(file.filepath)
-
+    console.log('buffer size:', buffer.length)
     // 上传到 COS
     const url = await uploadFile(buffer, key)
 

@@ -3,7 +3,10 @@ import { get, post, put, del } from './request'
 // ============ 认证相关 ============
 export const authApi = {
   login: (phone: string, password: string) =>
-    post<{ token: string; merchant: any }>('/auth/admin/login', { phone, password }),
+    post<{ token: string; merchant: any }>('/auth/admin/login', {
+      account: phone,
+      password
+    }),
   refreshToken: () => post<{ token: string }>('/auth/refresh')
 }
 
@@ -90,7 +93,7 @@ export const uploadApi = {
   uploadImage: async (filePath: string): Promise<string> => {
     return new Promise((resolve, reject) => {
       uni.uploadFile({
-        url: `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api/v1'}/upload`,
+        url: `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api/v1'}/upload/image`,
         filePath,
         name: 'file',
         header: {

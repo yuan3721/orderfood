@@ -59,7 +59,7 @@ export const adminMiddleware = async (ctx: Context, next: Next) => {
     if (payload.type !== 'merchant') {
       throw new AppError('无权限访问', ErrorCode.FORBIDDEN, 403)
     }
-
+    
     ctx.state.merchant = {
       id: payload.id,
       type: payload.type

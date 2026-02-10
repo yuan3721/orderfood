@@ -19,7 +19,9 @@ export const uploadFile = async (
         Body: buffer
       },
       (err, data) => {
+        console.log('cos putObject data:', data)
         if (err) {
+          console.log('cos putObject err:', err)
           reject(err)
         } else {
           const url = `https://${config.cos.bucket}.cos.${config.cos.region}.myqcloud.com/${key}`

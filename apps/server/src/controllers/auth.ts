@@ -69,7 +69,7 @@ export const authController = {
       account: string
       password: string
     }
-
+    console.log(account, password)
     if (!account || !password) {
       throw new AppError('请输入账号和密码', ErrorCode.BAD_REQUEST)
     }
@@ -84,10 +84,7 @@ export const authController = {
     }
 
     // 验证密码 (简单 hash 对比)
-    const hashedPassword = crypto
-      .createHash('sha256')
-      .update(password)
-      .digest('hex')
+    const hashedPassword = crypto.createHash('sha256').update(password).digest('hex')
 
     if (merchant.password !== hashedPassword) {
       throw new AppError('账号或密码错误', ErrorCode.UNAUTHORIZED, 401)

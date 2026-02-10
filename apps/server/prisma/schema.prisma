@@ -6,13 +6,13 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 // 用户表
 model User {
-  id        BigInt   @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   openid    String   @unique @db.VarChar(64)
   nickname  String?  @db.VarChar(50)
   avatar    String?  @db.VarChar(255)
@@ -27,7 +27,7 @@ model User {
 
 // 商家表
 model Merchant {
-  id        BigInt   @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   name      String   @db.VarChar(100)
   account   String   @unique @db.VarChar(50)
   password  String   @db.VarChar(255)
@@ -43,7 +43,7 @@ model Merchant {
 
 // 菜谱表
 model Menu {
-  id         BigInt   @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   date       DateTime @db.Date
   name       String   @db.VarChar(100)
   price      Decimal  @db.Decimal(10, 2)
@@ -51,7 +51,7 @@ model Menu {
   stock      Int      @default(0)
   sold       Int      @default(0)
   cutoffTime DateTime @map("cutoff_time")
-  merchantId BigInt   @map("merchant_id")
+  merchantId Int      @map("merchant_id")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
@@ -65,10 +65,10 @@ model Menu {
 
 // 订单表
 model Order {
-  id         BigInt    @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   orderNo    String    @unique @map("order_no") @db.VarChar(32)
-  userId     BigInt    @map("user_id")
-  merchantId BigInt?   @map("merchant_id")
+  userId     Int       @map("user_id")
+  merchantId Int?      @map("merchant_id")
   totalPrice Decimal   @map("total_price") @db.Decimal(10, 2)
   status     Int       @default(0) @db.SmallInt // 0: 待支付, 1: 已支付, 2: 已取消
   remark     String?   @db.Text
@@ -89,9 +89,9 @@ model Order {
 
 // 订单详情表
 model OrderItem {
-  id       BigInt  @id @default(autoincrement())
-  orderId  BigInt  @map("order_id")
-  menuId   BigInt  @map("menu_id")
+  id       Int     @id @default(autoincrement())
+  orderId  Int     @map("order_id")
+  menuId   Int     @map("menu_id")
   menuName String  @map("menu_name") @db.VarChar(100)
   quantity Int
   price    Decimal @db.Decimal(10, 2)
@@ -106,8 +106,8 @@ model OrderItem {
 
 // 支付记录表
 model Payment {
-  id            BigInt    @id @default(autoincrement())
-  orderId       BigInt    @map("order_id")
+  id            Int       @id @default(autoincrement())
+  orderId       Int       @map("order_id")
   transactionId String?   @map("transaction_id") @db.VarChar(64)
   amount        Decimal   @db.Decimal(10, 2)
   status        Int       @default(0) @db.SmallInt // 0: 待支付, 1: 成功, 2: 失败

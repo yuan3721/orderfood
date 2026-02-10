@@ -5,6 +5,6 @@ import { authMiddleware } from '../middleware/auth'
 const uploadRouter = new Router()
 
 // 图片上传
-uploadRouter.post('/image', authMiddleware, uploadController.uploadImage)
+uploadRouter.post('/image', authMiddleware, uploadController.upload)
 
 export { uploadRouter }

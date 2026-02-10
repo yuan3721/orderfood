@@ -47,12 +47,6 @@
       "style": {
         "navigationBarTitleText": "商家登录"
       }
-    },
-    {
-      "path": "pages/history/index",
-      "style": {
-        "navigationBarTitleText": "历史菜谱"
-      }
     }
   ],
   "globalStyle": {
@@ -69,27 +63,19 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页",
-        "iconPath": "static/tabbar/home.png",
-        "selectedIconPath": "static/tabbar/home-active.png"
+        "text": "首页"
       },
       {
         "pagePath": "pages/menu/index",
-        "text": "菜谱",
-        "iconPath": "static/tabbar/menu.png",
-        "selectedIconPath": "static/tabbar/menu-active.png"
+        "text": "菜谱"
       },
       {
         "pagePath": "pages/order/index",
-        "text": "订单",
-        "iconPath": "static/tabbar/order.png",
-        "selectedIconPath": "static/tabbar/order-active.png"
+        "text": "订单"
       },
       {
         "pagePath": "pages/setting/index",
-        "text": "设置",
-        "iconPath": "static/tabbar/setting.png",
-        "selectedIconPath": "static/tabbar/setting-active.png"
+        "text": "设置"
       }
     ]
   },
