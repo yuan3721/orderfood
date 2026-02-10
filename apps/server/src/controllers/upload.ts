@@ -20,6 +20,11 @@ export const uploadController = {
       throw new AppError(400, '请上传文件')
     }
 
+    console.log('uploaded file:', {
+      name: file.originalFilename,
+      type: file.mimetype,
+      size: file.size
+    })
     // 验证文件类型
     if (!ALLOWED_TYPES.includes(file.mimetype || '')) {
       throw new AppError(400, '不支持的文件类型，仅支持 jpg/png/gif/webp')

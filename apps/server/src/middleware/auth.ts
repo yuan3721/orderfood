@@ -20,9 +20,10 @@ export const authMiddleware = async (ctx: Context, next: Next) => {
   }
 
   try {
+    console.log('payload:', jwt.decode(token))
     const payload = jwt.verify(token, config.jwt.secret) as JwtPayload
-
-    if (payload.type !== 'user') {
+    console.log('verified payload:', payload)
+    if (payload.type !== 'user' && payload.type !== 'merchant') {
       throw new AppError('无权限访问', ErrorCode.FORBIDDEN, 403)
     }
 

@@ -1,10 +1,10 @@
 import Router from '@koa/router'
 import { uploadController } from '../controllers/upload'
-import { authMiddleware } from '../middleware/auth'
+import { authMiddleware, adminMiddleware } from '../middleware/auth'
 
 const uploadRouter = new Router()
 
 // 图片上传
-uploadRouter.post('/image', authMiddleware, uploadController.upload)
+uploadRouter.post('/image', adminMiddleware, uploadController.upload)
 
 export { uploadRouter }
